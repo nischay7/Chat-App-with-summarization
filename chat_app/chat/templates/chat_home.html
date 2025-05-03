@@ -13,6 +13,9 @@
         <div>
             <h1> FastAPI chat</h1>
             <form action="" onsubmit="sendmessage(event)">
+                <label for="user"> User id: </label>
+                <input type="text" id="user" />
+                <label for="messagetext">Message:</label>
                 <input type="text" id="messagetext" />
                 <button type="submit">Send</button>
             </form>
@@ -26,6 +29,7 @@
                 console.log("received message")
                 var messages = document.getElementById("messages")
                 var message = document.createElement('li')
+                console.log(event)
                 var content = document.createTextNode(event.data)
                 messages.appendChild(content)
                 messages.appendChild(message)
@@ -38,7 +42,8 @@
             }
             function sendmessage(event) {
                 var input = document.getElementById("messagetext");
-                ws.send(input.value)
+                var user = document.getElementById("user");
+                ws.send(JSON.stringify({"action": "sendmessage", "target_user": user, "msg": input.value}))
                 input.value = ''
                 event.preventDefault()
             }
